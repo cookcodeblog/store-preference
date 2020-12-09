@@ -1,0 +1,5 @@
+#recommendations:
+#  api:
+#    url: http://recommendation:8080
+
+# Use OpenFeign to lookup service name

@@ -1,5 +1,6 @@
 package com.example.store.controller;
 
+import com.example.store.feign.RecommendationFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +21,17 @@ public class PreferenceController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${recommendations.api.url}")
-    private String remoteURL;
+//    @Value("${recommendations.api.url}")
+//    private String remoteURL;
+
+    @Autowired
+    private RecommendationFeignClient recommendationFeignClient;
 
     @RequestMapping("/")
     public ResponseEntity<?> getPreferences() {
         try {
-            ResponseEntity<String> responseEntity = restTemplate.getForEntity(remoteURL, String.class);
+//            ResponseEntity<String> responseEntity = restTemplate.getForEntity(remoteURL, String.class);
+            ResponseEntity<String> responseEntity = recommendationFeignClient.getRecommendations();
             String response = responseEntity.getBody();
             return ResponseEntity.ok(String.format(RESPONSE_STRING_FORMAT, response.trim()));
         } catch (HttpStatusCodeException ex) {
