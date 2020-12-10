@@ -28,3 +28,9 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 5000
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: ${JAEGER_HOST:localhost}
+      port: ${JAEGER_PORT:6831}
