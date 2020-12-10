@@ -1,5 +1,30 @@
-#recommendations:
-#  api:
-#    url: http://recommendation:8080
+server:
+  port: 0 # ${random.int(5000,5100)} doesn't work in zuul ?
 
-# Use OpenFeign to lookup service name
+eureka:         #tells about the Eureka server details and its refresh time
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+    instance-id: ${spring.application.name}:${random.int}
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+logging:
+  level:
+    com.example.store: DEBUG
+
+ribbon:
+  ReadTimeout: 5000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000

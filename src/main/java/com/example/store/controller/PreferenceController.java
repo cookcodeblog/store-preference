@@ -1,6 +1,7 @@
 package com.example.store.controller;
 
 import com.example.store.feign.RecommendationFeignClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ public class PreferenceController {
     @Autowired
     private RecommendationFeignClient recommendationFeignClient;
 
+    @HystrixCommand(fallbackMethod = "defaultGetPreferences")
     @RequestMapping("/")
     public ResponseEntity<?> getPreferences() {
         try {
@@ -52,5 +54,9 @@ public class PreferenceController {
             return ex.getStatusCode().getReasonPhrase();
         }
         return responseBody;
+    }
+
+    private ResponseEntity<?> defaultGetPreferences() {
+        return ResponseEntity.ok("Fallback: Invoke default getPreferences()...");
     }
 }
