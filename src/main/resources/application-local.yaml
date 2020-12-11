@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 0 # ${random.int(5000,5100)} doesn't work in zuul ?
 
 eureka:         #tells about the Eureka server details and its refresh time
   instance:
@@ -8,7 +8,7 @@ eureka:         #tells about the Eureka server details and its refresh time
     instance-id: ${spring.application.name}:${random.int}
   client:
     serviceUrl:
-      defaultZone: http://service-registry:8080/eureka/
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
     healthcheck:
       enabled: true
     lease:
@@ -32,5 +32,5 @@ hystrix:
 opentracing:
   jaeger:
     udp-sender:
-      host: jaeger-agent
-      port: 6831
+      host: ${JAEGER_HOST:localhost}
+      port: ${JAEGER_PORT:6831}
