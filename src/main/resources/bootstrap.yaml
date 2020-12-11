@@ -2,12 +2,6 @@ spring:
   application:
     name: preference
 
-opentracing:
-  jaeger:
-    udp-sender:
-      host: localhost
-      port: 6831
-
 management:
   endpoints:
     web:
