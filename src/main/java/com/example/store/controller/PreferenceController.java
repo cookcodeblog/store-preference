@@ -1,6 +1,5 @@
 package com.example.store.controller;
 
-import com.example.store.feign.RecommendationFeignClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +21,15 @@ public class PreferenceController {
     @Autowired
     private RestTemplate restTemplate;
 
-//    @Value("${recommendations.api.url}")
-//    private String remoteURL;
+    @Value("${recommendations.api.url}")
+    private String remoteURL;
 
-    @Autowired
-    private RecommendationFeignClient recommendationFeignClient;
 
     @HystrixCommand(fallbackMethod = "defaultGetPreferences")
     @RequestMapping("/")
     public ResponseEntity<?> getPreferences() {
         try {
-//            ResponseEntity<String> responseEntity = restTemplate.getForEntity(remoteURL, String.class);
-            ResponseEntity<String> responseEntity = recommendationFeignClient.getRecommendations();
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity(remoteURL, String.class);
             String response = responseEntity.getBody();
             return ResponseEntity.ok(String.format(RESPONSE_STRING_FORMAT, response.trim()));
         } catch (HttpStatusCodeException ex) {
