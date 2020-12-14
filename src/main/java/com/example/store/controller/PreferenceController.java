@@ -1,6 +1,5 @@
 package com.example.store.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +24,7 @@ public class PreferenceController {
     private String remoteURL;
 
 
-    @HystrixCommand(fallbackMethod = "defaultGetPreferences")
+//    @HystrixCommand(fallbackMethod = "defaultGetPreferences")
     @RequestMapping("/")
     public ResponseEntity<?> getPreferences() {
         try {
